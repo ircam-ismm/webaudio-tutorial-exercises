@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simple website</title>
+
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+
+</head>
+<body>
+  <h1>Mon titre</h1>
+
+  <p>
+    <a href="./bio.html">bio</a>
+  </p>
+
+  <p>mon paragraphe, coucou!</p>
+
+  <ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+    <li>Item 4</li>
+  </ul>
+
+  <p>
+    link to
+    <a href="https://developer.mozilla.org/">
+      MDN documentation
+    </a>
+  </p>
+
+  <div id="square"></div>
+
+  <script>
+    const button = document.querySelector('#square');
+    console.log(button);
+
+    function onButtonClick() {
+      const colors = ['pink', 'green', 'red', 'steelblue', 'purple'];
+      const random = Math.random() * colors.length; // float [0; colors.length[
+      const index = Math.floor(random); // integer [0; colors.length[
+      const color = colors[index];
+
+      button.style.backgroundColor = color;
+
+      console.log('function onButtonClick called!', button);
+    }
+
+    button.addEventListener('click', onButtonClick);
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
