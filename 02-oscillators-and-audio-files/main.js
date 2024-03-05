@@ -1,43 +1,37 @@
 const audioContext = new AudioContext();
 
+console.clear();
+
 async function resumeAudioContext() {
   await audioContext.resume();
-  button.remove();
+  console.log('audioContext.state: ', audioContext.state);
 }
 
 const button = document.querySelector('#resume-audio-context');
 button.addEventListener('click', resumeAudioContext);
 
-function triggerSine() {
-  // const numPartials = 10;
+function triggerOsc() {
+  // create oscillator
+  const osc = audioContext.createOscillator();
+  const freq = 100 + Math.random() * 900;
+  osc.frequency.value = freq;
 
-  // for (let i = 1; i <= numPartials; i++) {
-    // create oscillator
-    const osc = audioContext.createOscillator();
-    const freq = (Math.random() * 900 + 100);
-    osc.frequency.value = freq;
-
-    const now = audioContext.currentTime;
-    const env = audioContext.createGain();
-    env.gain.value = 0;
-    env.gain.setValueAtTime(0, now);
-    env.gain.linearRampToValueAtTime(0.1, now + 0.01);
-    env.gain.exponentialRampToValueAtTime(0.0001, now + 1);
-
-    // osc.connect(audioContext.destination);
-    osc.connect(env);
-    env.connect(audioContext.destination);
-    // demarrer l'oscillator
-    osc.start(now);
-    osc.stop(now + 1);
-  // }
-
-  // setTimeout(() => triggerSine(), 50);
+  const env = audioContext.createGain();
+  env.gain.value = 0;
+  // pick the context current time in seconds
+  const now = audioContext.currentTime;
+  env.gain.setValueAtTime(0, now);
+  env.gain.linearRampToValueAtTime(0.1, now + 0.01);
+  env.gain.exponentialRampToValueAtTime(0.0001, now + 1);
+  // create garph
+  osc.connect(env).connect(audioContext.destination);
+  // start oscillator
+  osc.start(now);
+  osc.stop(now + 1);
 }
 
-
-const triggerSyncButton = document.querySelector('#trigger-sine');
-triggerSyncButton.addEventListener('click', triggerSine);
+const triggerOscButton = document.querySelector('#trigger-osc');
+triggerOscButton.addEventListener('click', triggerOsc);
 
 async function loadAudioBuffer(pathname) {
   const res = await fetch(pathname);
@@ -50,7 +44,6 @@ async function loadAudioBuffer(pathname) {
 const audioBuffer = await loadAudioBuffer('./drum-loop.wav');
 console.log(audioBuffer);
 
-
 function triggerBuffer() {
   const src = audioContext.createBufferSource();
   src.buffer = audioBuffer;
@@ -58,6 +51,5 @@ function triggerBuffer() {
   src.start();
 }
 
-const triggerBufferButton = document.querySelector('#trigger-buffer');
-triggerBufferButton.addEventListener('click', triggerBuffer);
-
+// const triggerBufferButton = document.querySelector('#trigger-buffer');
+// triggerBufferButton.addEventListener('click', triggerBuffer);
